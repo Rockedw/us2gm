@@ -1,0 +1,182 @@
+.materials-bin {
+  align-items: flex-start;
+  display: flex;
+}
+
+.mb-hidden {
+  display: none;
+}
+
+.mb-selected {
+  background: #cfe3e3 !important;
+  color: #166971 !important;
+}
+
+.mb-column {
+
+  &:nth-child(1) {
+    width: 290px;
+  }
+  &:nth-child(2) {
+    margin-left: 10px;
+    width: 710px;
+  }
+}
+
+.mb-cell {
+  padding: 10px;
+}
+
+.mb-category {
+  font-size: 15px;
+}
+
+.mb-clickable {
+  cursor: pointer;
+}
+
+.mb-collection {
+  padding-bottom: 20px;
+  white-space: normal;
+
+  &:not(:last-child) {
+    border-bottom: 3px solid #ccc;
+    margin-bottom: 20px;
+  }
+
+  header {
+    display: flex;
+    margin-bottom: 15px;
+
+    a {
+      display: block;
+      flex-grow: 1;
+      font-size: 16px;
+      text-align: right;
+
+      &:focus {
+        outline: 0;
+      }
+    }
+
+    h4.mb-collection-name {
+      font-size: 22px;
+      line-height: 1;
+      margin-bottom: 5px;
+    }
+  }
+}
+
+.mb-toggle-symbol {
+  font-family: monospace;
+  opacity: 0.65;
+}
+
+.mb-material {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 15px;
+
+  .mb-material-thumbnail {
+    border: solid 1px #f3f3f3;
+    height: 96px;
+    margin: 0 10px 15px 0;
+    overflow: hidden;
+    position: relative;
+    width: 170px;
+
+    img {
+      height: 100%;
+      width: 100%;
+    }
+  }
+
+  .mb-material-text {
+    flex-grow: 1;
+    width: 495px !important;
+
+    h4.mb-material-name {
+      font-size: 18px;
+      line-height: 1;
+      margin-bottom: 5px;
+    }
+
+    .mb-material-description {
+      font-size: 14px;
+  
+      p {
+        line-height: 1.6;
+        margin: 0;
+      }
+    }
+  }
+
+  .mb-material-links {
+    font-size: 15px;
+    width: 100%;
+
+    a {
+      border-left: solid 1px #ea6d2f;
+      display: inline-block;
+      line-height: .9;
+      margin: 0 0 0 10px;
+      padding: 0 0 0 10px;
+      text-transform: uppercase;
+
+      &:first-child {
+        border-left: none;
+        margin-left: 0;
+        padding-left: 0;
+      }
+    }
+  }
+
+  a.mb-archive-link {
+    margin-left: 0.5em;
+    font-size: 9pt;
+  }
+}
+.loading {
+  background: transparent url(../../assets/loading.gif) no-repeat center top;
+  background-size: 64px;
+  color: #999;
+  font-size: 14px;
+  font-weight: 500;
+  height: 90px;
+  padding-top: 70px;
+  text-align: center;
+  text-transform: uppercase;
+  width: 100%;
+}
+.earlyelementary-K2 {
+  background: #fee9aa;
+  color: #166971;
+}
+.elementary-34 {
+  background: #8cbbb8;
+  color: #166971;
+}
+.elementary-56 {
+  background: #368991;
+  color: #cfe3e3;
+}
+.middle-school {
+  background: #ea9b18;
+  color: #555555;
+}
+.high-school {
+  background: #8fbf5f;
+  color: #555555;
+}
+.stem-career {
+  background: #8fbf5f;
+  color: #555555;
+}
+.math-math {
+  background: #fee9aa;
+  color: #555555;
+}
+.other-cat {
+  background: #DBDBDB;
+  color: #555555;
+}

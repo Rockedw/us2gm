@@ -1,0 +1,10 @@
+-# %h3= "Welcome, #{teacher.name} from #{teacher.school.name}"
+-# Displaying the first school causes confusion for teachers who are
+-# in more than one school. They think that their account is locked
+-# into just one school.
+%h3= "Welcome, #{teacher.name}"
+- if current_user.has_active_classes?
+  %p
+    Your classes are listed in the left-hand column on this page.
+- else
+  = render partial: 'home/getting_started_teacher'

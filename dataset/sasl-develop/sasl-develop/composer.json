@@ -1,0 +1,66 @@
+{
+    "name": "fabiang/sasl",
+    "description": "Abstraction of various SASL mechanism responses.",
+    "license": "BSD-3-Clause",
+    "homepage": "https://github.com/fabiang/sasl",
+    "keywords": ["sasl", "authentication", "scram", "auth"],
+    "type": "library",
+    "authors": [
+        {
+            "name": "Fabian Grutschus",
+            "email": "f.grutschus@lubyte.de"
+        },
+        {
+            "name": "Anish Mistry",
+            "email": "amistry@am-productions.biz"
+        },
+        {
+            "name": "Richard Heyes",
+            "email": "richard@php.net"
+        },
+        {
+            "name": "Michael Bretterklieber",
+            "email": "michael@bretterklieber.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Fabiang\\Sasl\\": "src/"
+        },
+        "files": ["src/throwable.php"]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Fabiang\\Sasl\\Behat\\": "tests/features/bootstrap"
+        },
+        "files": ["tests/compat.php"]
+    },
+    "require": {
+        "php": "^5.3.3 || ^7.0 || ~8.0.0 || ~8.1.0"
+    },
+    "require-dev": {
+        "behat/behat": "^3.6",
+        "phpunit/phpunit": ">=4.8",
+        "slevomat/coding-standard": "*",
+        "squizlabs/php_codesniffer": "*",
+        "vimeo/psalm": "*"
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    },
+    "scripts": {
+        "phpcs": "phpcs",
+        "psalm": "psalm",
+        "phpunit": "phpunit",
+        "behat": "behat",
+        "test": [
+            "@phpunit",
+            "@behat",
+            "@psalm",
+            "@phpcs"
+        ]
+    }
+}

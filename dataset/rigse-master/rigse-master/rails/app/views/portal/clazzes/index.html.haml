@@ -1,0 +1,14 @@
+%h1 Listing Classes
+%br
+%table{:width=>"100%"}
+  - @portal_clazzes.each do |portal_clazz|
+    %tr
+      %td= portal_clazz.id
+      %td= portal_clazz.name
+      %td= link_to 'Show', portal_clazz
+      %td= link_to 'Edit', portal_clazz 
+      %td= link_to 'Destroy', portal_clazz 
+  
+%br
+
+= link_to 'New Class', new_portal_clazz_path

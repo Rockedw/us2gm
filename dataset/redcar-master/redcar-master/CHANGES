@@ -1,0 +1,700 @@
+
+Version 1.0 (TBA)
+================================
+
+ * Add a basic, context menu-based bundle and snippet editor to Snippet Browser (Delisa Mason)
+ * Fix a bug in the Lucene plugin that was causing Redcar to hold files open (Dan Lucraft)
+ * OSX platform application bundle (Dan Lucraft)
+ * The line number gutter is coloured like the current theme (Delisa Mason)
+ * Add "Save All" to the File menu (Ninh Bui, hethert)
+ * Use bundler for installing development dependencies (Steven! Ragnarök)
+ * Add menu item for running the current tab with arguments (Daniel Jolicoeur)
+ * Add windows batch file for easily starting redcar with arguments (Chad Gorshing)
+ * Close tab when clicked with the middle mouse button (Delisa Mason)
+
+Version 0.13 (21st January 2012)
+================================
+
+ * Move all language settings options into the Edit menu, for easier discoverability.(Dan Lucraft)
+ * Move the change tab language command into the Edit menu, and make it a filter list. (Dan Lucraft)
+ * extended the FilterListDialog class to support icons, by merging in the outline_view plugin (Dan Lucraft)
+ * implemented project-wide Find declaration (Project/Find declaration) (Dan Lucraft)
+ * Don't use Bundler when running as a gem (Dan Lucraft)
+ * Parse Ruby with 1.9 syntax instead of 1.8 (Dan Lucraft)
+ * Made the auto indenter ignore blank lines when deciding on indentation. (Dan Lucraft)
+ * New API for tab context menus (Dan Lucraft)
+ * Copy path of file to clipboard tab context menu item (Dan Lucraft)
+ * New APIs on Window to get and set window location, size and tree width (Dan Lucraft)
+ * Remember project window location and size, and tree width between sessions (Markus Kahl)
+ * Remember open files between sessions (Christopher Wade)
+ * Remember cursor location and selection between sessions (Christopher Wade)
+ * Remove broken remote project support, and clean up Project classes. (Dan Lucraft)
+
+Version 0.12 (7th January 2012)
+===============================
+
+ * Features run all the way through again, and use Swtbot in places to
+   allow us to simulate events more accurately (Helpful for macros) (Dan Lucraft)
+ * Added --no-splash option (Dan Lucraft)
+ * Fix runnables for JRuby 1.6.1 (Chris Nelson)
+ * Improved developer first experience (Dr Nic Williams)
+ * Improved after install instruction language (Jeff Casimir)
+ * Added forward char, backward char, and delete char commands (Dan Lucraft)
+ * Fixed irritating bugs in the indenter (Dan Lucraft)
+ * Pressing enter when between {} will expand the block (Dan Lucraft)
+ * Tweak to line numbers so highlighting isn't lost as doc passes 100 lines (Dan Lucraft)
+ * Added next line, previous line bindings to Ctrl+N and Ctrl+P (Dan Lucraft)
+ * Added open line, transpose characters commands (Dan Lucraft)
+ * OSX style unified toolbars (Dan Lucraft)
+ * Supports OS X Lion fullscreen mode (Dan Lucraft)
+ * Jump back and forward through navigation history (Shinichi Katayama)
+ * Added option to add editable ComboItem widgets to Speedbars (Delisa Mason)
+ * Updated UI Styling (Delisa Mason)
+ * Added option to color tree background color via ApplicationSWT preferences (Delisa Mason)
+ * Project tree has colourful icons (Delisa Mason)
+ * Uses gems to install everything (Dan Lucraft)
+ * Uses Bundler to manage dependencies in development (Dan Lucraft)
+ * Wildcards permitted in project search (Delisa Mason)
+ * Installation entirely through Rubygems (Dan Lucraft)
+ * Rad new icon (Delisa Mason)
+ * Checks for updates and displays if there is a new version in the Help menu (Dan Lucraft)
+
+Version 0.11 (23 March 2011)
+============================
+
+Enhancements:
+
+ * Project search backed by Lucene (Dan Lucraft)
+ * Fuzzy file finder now recognizes directories "a/c/repocontr" (Tim Felgentreff)
+ * Recent project fuzzy finder (Benedikt Müller)
+ * Improved DocumentSearch, with UI refinements, added Replace All commands (Tom Murray)
+ * Raise/lower region behaves better when you select multiple lines (Benedikt Müller)
+ * Which files are hidden in a project is now configurable (Konstantin Haase)
+ * Added logger at Redcar.log, goes to ~/.redcar/user.log (Dan Lucraft)
+ * Can hide files and directories from the project context menu (Benedikt Müller)
+ * Notification if Redcar doesn't have permission to save files (Benedikt Müller & Bill Siggelkow)
+ * Tweaked the load order to make the window appear faster during startup (Dan Lucraft)
+ * All the plugins use a single preference value to ignore files (Benedikt Müller & Daniel Lucraft)
+ * Can ignore directories (Benedikt Müller)
+ * User definable keybindings (Chris Nelson)
+
+Bugfixes:
+ * Fixed Unicode problems in DocumentSearch (Tom Murray)
+ * You can now symlink bin/redcar (Konstantin Haase)
+ * Runnables are now terminated correctly when the tab is closed (Dan Lucraft)
+ * You are once again prompted when you close a window with running Runnables in (Dan Lucraft)
+ * Fix encoding issue that broke highlighting when there are multi-byte characters in a line (Dan Lucraft)
+ * Fixed project-dependent trees remaining open when project is closed (Delisa Mason)
+
+Version 0.10 (17 January 2011)
+==============================
+
+Enhancements:
+
+ * Add "Close others" and "Close all" commands to the File menu (Clinton R Nixon)
+ * Syntax checking for Java (Delisa Mason)
+ * Git integration is now available when the current project is a subdirectory of a repository (Delisa Mason)
+ * Ctrl+A/E (home and end) added for Linux (Tomasz Wegrzanowski)
+ * Trim line deletes newline if rest of line is empty (Tomasz Wegrzanowski)
+ * Fuzzy finders (e.g. find file) ignore spaces. (Tomasz Wegrzanowski)
+ * Highlighting the current file in the project tree is now optional and is in the Project menu (Delisa Mason)
+ * Document Search is now incremental (Delisa Mason)
+ * REPL Enhancements, including commit on Return (Delisa Mason)
+ * Mirah syntax checking (Michal Hantl)
+ * Mirah REPL (Delisa Mason)
+ * More keybindings for adjusting views, such as changing font size, notebook width, and focussed tree (Delisa Mason)
+ * New look! (Max Hawkins)
+ * 3+ notebooks allowed at once (Dotan J. Nahum)
+ * Configurable test runner plugin (Chris Nelson)
+ * Added menu mnemonics for Linux and Windows (Delisa Mason)
+ * Much improved search and replace behaviour (Tom Murray)
+
+Bugfixes:
+
+ * TitleCase now works when the selected text has capital letters in it (Delisa Mason)
+ * Go to Declaration is only available when a project is open (Delisa Mason)
+ * Saving a file prompts before overwriting (Delisa Mason)
+ * Encrypt/Decrypt does not happen if a user cancels (Utkarsh Kukreti)
+ * Fix the "Index out of bounds" errors in the pair highlighter (Delisa Mason)
+ * Searching will now scroll the window horizontally (#400) (Delisa Mason)
+
+New APIs:
+
+ * Non-modal text, list, and browser dialogs in Application::Dialog (Delisa Mason)
+
+Version 0.9.1 (2 December 2010)
+===============================
+
+ * Move rhino mirror (Dan Lucraft)
+
+Version 0.9 (25 November 2010)
+==============================
+
+Enhancements:
+
+ * Vertical tree tabs now have a close button like edit view tabs (Tim Felgentreff)
+ * Strip Trailing Spaces is now _much_ faster (Tim Felgentreff)
+ * "Online Help" and "Submit a Bug" open the default system browser (Johannes Wollert)
+ * -l command line switch to jump to a file number (Johannes Wollert)
+ * Font and Theme dialogs now update the setting on selection change for instant feedback (Tim Felgentreff)
+ * Tabs now display an alert icon if the underlying file is unwritable (Delisa Mason)
+ * Browser bar URL field now supports project-relative paths (Delisa Mason)
+ * URLs can be opened in the internal browser or the OS-default based on preferences (Delisa Mason)
+ * Syntax checking for Groovy (Delisa Mason)
+ * Jump to declaration for Groovy (Delisa Mason)
+ * Margin is drawn with a line or a shaded area (Tim Felgentreff)
+ * Syntax checking for JavaScript (Delisa Mason)
+ * Word wrap wraps at the margin column (Daniel Lucraft)
+ * Improvements and optimizations to replace-all function (Tim Felgentreff)
+ * .redcar plugins dir is created on startup to help people know they can put plugins there (Philip Arndt)
+ * Add jruby jar to JVM bootclasspath to speedup startup marginally (Tim Felgentreff)
+
+Bug fixes:
+
+ * Declarations plugin is able to deal with similarly named ruby methods
+ * Declarations plugin lets Ruby methods have trailing spaces (Johannes Wollert)
+ * Fix Application::Dialog#tool_tip to set the location correctly on Windows (Patrik Sundberg)
+ * 64bit Soylatte JDK7 can now be used to run Redcar on Mac OS X
+ * Run Tab now checks for underlying file (Delisa Mason)
+ * Hovering on annotations only displays the tooltip(s) under the cursor, not all of them (Delisa Mason)
+ * Fix for installing on Ruby 1.8.6 (Dan Lucraft)
+ * Connection manager should not try and read directories and unreadable files when looking for private keys (Antono Vasiljev)
+ * Required cucumber version is specified in the Gemfile (Tianyi Cui)
+ * Pair highlighter works on first and last character in the document (Kirill Nikitin)
+
+Internal changes:
+
+  * Code coverage is above 70% (up from 60%) (everyone)
+  * Code cleanup and refactoring in various plugins (everyone)
+  * Speedbar can now contain sliders (Tim Felgentreff)
+
+Version 0.8.1 (26 October 2010)
+===============================
+
+ * Replace all is a single undo operation (Steven Hancock)
+ * Remove files with multi-byte names from the gem so windows rubygems is happy (Dan Lucraft)
+
+Version 0.8 (26 October 2010)
+=============================
+
+Enhancements:
+
+ * Alternate Runnables File Runner command and shortcut (Delisa Mason)
+ * File runners now have access to line number and file names (Delisa Mason)
+ * Projects can have 'subproject' windows which share config files like Runnables (Delisa Mason)
+ * Symlinks to other directories are searched recursively (Tim Felgentreff)
+ * Redcar can be started without opening a window (for boot-time startup) (Tim Felgentreff)
+ * The Mac OS X app bundle comes with assets bundled (Tim Felgentreff)
+ * The Runnables tree now nests runnables depending on slashes in the type definition (Tim Felgentreff)
+ * Deleting or moving a file updates the tab title and file correctly. (Delisa Mason)
+ * Paired characters are not inserted if it looks like you are closing a pair (Dan Lucraft)
+ * Syntax checking for Ruby upon save (Tim Felgentreff)
+ * Deleting a file from the project tree will move it to the trash, if the OS permits (Tim Felgentreff)
+ * Help Menu options for submitting bugs and viewing the users' guide (Delisa Mason)
+ * Toggle line and selection commenting (Delisa Mason)
+ * Clipboard History Viewer and Paster (Delisa Mason)
+ * Web Preview files and Bookmarks (Delisa Mason)
+ * -w commandline switch to block the prompt when piping into or opening files on an existing Redcar instance (Tim Felgentreff)
+ * 'Open Default App' project context menu item for opening any type of file (Jeremy Wentworth)
+ * Changing to another tab reveals the associated file in the project tree (Johannes Wollert)
+ * Trees can be hidden or revealed by a keyboard shortcut (Delisa Mason)
+ * Fullscreen mode! (Matt Scharley)
+
+Bugfixes:
+
+ * Snippet completion works even when preceded by other characters (Delisa Mason)
+ * New files now open in the project window which is the closest ancestor (Delisa Mason)
+ * Search-and-replace now operates on the user-selected text as well, not only after it (Tim Felgentreff)
+ * Word back/forward movement is not confused by multi-byte characters. (Dan Lucraft)
+ * Can load files with multi-byte characters and see them in the tree (Dan Lucraft)
+ * Open in command line now works correctly with Terminal.app (Delisa Mason, Mat Schaffer)
+ * Search-and-replace won't loop forever over a document anymore if it still finds the search string (Tim Felgentreff)
+ * Goto line command works again (Dan Lucraft)
+ * Run tab commands are now project-aware (Delisa Mason)
+
+New APIs:
+ * after_save can be implemented by plugins to run code after an edit view was saved (Tim Felgentreff)
+ * before_web_refresh can be implemented by plugins to run code before a HtmlTab is refreshed (Delisa Mason)
+
+Version 0.7 (4 October 2010)
+============================
+
+Enhancements:
+
+ * Vertical tabs for the tree book on the left. (Tim Felgentreff)
+ * Runnables are grouped by type in the tree (Delisa Mason)
+ * Improved styling of the keyboard shortcuts help and todo list (Delisa Mason)
+ * Tidier Edit menu! (Delisa Mason)
+ * Record and run macros (Dan Lucraft)
+ * Name and save macros (Dan Lucraft)
+ * Macro manager to save, rename and delete macros (Dan Lucraft)
+ * Predictive macros that know what you want to do! (Dan Lucraft)
+ * Experimental Subversion integration (Delisa Mason)
+
+New internal APIs:
+
+ * DocumentHistory stream of changes to text (Dan Lucraft)
+ * Menus can have lazy text that is generated when you look at them (Dan Lucraft)
+ * Tab icons can change. (Dan Lucraft)
+
+Bugfixes
+
+ * Open in file browser and command line now works on Windows (Jeremy Wentworth, Delisa Mason)
+
+
+Version 0.6 (21 September 2010)
+===============================
+
+Enhancements
+
+ * Now we have a toolbar in the Redcar (Alex Lourie)
+ * Line Tools advanced editing commands (Delisa Mason)
+ * Added a 'Open Directory as new project' context menu item (Delisa Mason)
+ * Added a 'Tidy File' menu option which will try to reindent complete file (Alex Lourie)
+ * find-in-project: Search spinner, remember search settings, wrap long lines, styling updates (Kieran Pilkington)
+ * Align assignments command (Stefan Natchev)
+ * Groovy REPL! (Delisa Mason)
+ * Sort lines command (Erik Lundqvist)
+ * Runnables: copy output to clipboard (Mat Schaffer)
+ * Runnables: 'run again' button (Mat Schaffer)
+
+Bugfixes:
+
+ * find-in-project: results are now sorted from a-z, instead of backwards (Kieran Pilkington)
+
+New internal APIs
+
+ * Toolbar items APIs (Alex Lourie)
+
+Version 0.5 (7 September 2010)
+==============================
+
+Enhancements
+
+ * Indenting a block of text is now a single undo operation (Johannes Wollert)
+ * SCM trees are only loaded when you need them - speeds up project opening a lot (Matthew Scharley)
+ * Checkbox menu items for tab view togglables (Alex Lourie)
+ * Checkbox menu item for strip trailing spaces (Steven Hancock)
+ * Runnables work on Windows (Mat Schaffer)
+ * Open directory in command line / os directory viewer (Matthew Scharley, Delisa Mason)
+ * Can press enter really fast in the FindFileDialog and it will open the correct file (Tim Felgentreff)
+ * Use spoon for forking on Linux, OSX (Matthew Scharley)
+ * Find-in-project streams as it finds results (Kieran Pilkington)
+ * Installer doesn't need to be run as root anymore. (Dan Lucraft)
+ * Splash screen (Dan Lucraft)
+ * Installer loads Redcar, therefore putting all the Redcar files in the OS disk cache (Dan Lucraft)
+ * Read installed JVM options and use 32bit client vm if available (Dan Lucraft & Alex Lourie)
+ * Edit views now have right-click menu, with hooks for plugins (Delisa Mason)
+
+New internal APIs
+
+ * FileParser for reading over all files in a project (Kieran Pilkington)
+ * Checkbox menu items (Alex Lourie)
+
+Fixes:
+
+ * Fix for autocomplete, which was randomly broken due to a load order error (Anko painting)
+ * [Bug 300] Remove duplicate snippets (requires deleting your Textmate cache file)(Dan Lucraft)
+ * [Bug 297] New files can be immediately opened from the directory tree again (Dan Lucraft)
+ * [Bug 302] Search/replace won't infinitely recurse when the search string is a prefixed substring of the replace text. (Dan Lucraft)
+ * [Bug 293] Select Word works correctly on such un-American words as: "können" (Dan Lucraft)
+ * [Bug 286] The paste command no longer inserts in the wrong location when the autoindenter tries to run during the command (Dan Lucraft)
+ * [Bug 270] The "Go to declaration" fuzzy finder chooses the right file when you have refined the list (Dan Lucraft)
+ * Precaching textmate bundles is now more robust (Dan Lucraft)
+ * [Bug 209] Gives visual feedback during startup (Dan Lucraft)
+
+Version 0.4.1 (24 Aug 2010)
+===========================
+
+Fixes:
+
+ * Fix Clojure REPL (Dan Lucraft)
+ * Attribution for icons (Dan Lucraft)
+ * Use icon we have a license for in the snippet tree (Delisa Mason)
+
+Version 0.4 (23 Aug 2010)
+=========================
+
+Enhancements:
+
+ * Colourful Runnables! (The output tab supports ANSI escape codes) (Mat Schaffer)
+ * Runnables scroll as the output gets longer (Delisa Mason)
+ * Option to save all tabs before running any Runnable (Delisa Mason)
+ * Strip trailing spaces on save option (Steven Hancock)
+ * Search and replace supports backreferences (\1 \2 etc) (Mat Schaffer)
+ * Uses client, 32bit jvm mode, for twice as fast startup. (Dan Lucraft)
+ * Bracket highlighting! (Alex Lourie)
+ * Todo list (find all occurrences of TODO etc in project) (Delisa Mason)
+ * Styled runnable tabs (Mat Schaffer)
+ * See all snippets in a tree (Delisa Mason)
+ * Find in project plugin (uses grep and ack) (Kieran Pilkington and Krzysztof Jablonski)
+ * Runnables re-use an open tab. (Mat Schaffer)
+ * Can pin your choice of bundles to the bundles menu (Delisa Mason)
+ * Experimental git scm integration (Matthew Scharley)
+ * PHP jump to declaration support (Daniel Cestari)
+ * Outline view of document (jump to declaration in document) (Johannes Wollert)
+
+Fixes:
+
+ * Fix for opening files with regex characters in. (Tom Murray)
+
+Version 0.3.9 (12 Aug 2010)
+===========================
+
+ * Clojure REPL (David Byrne)
+ * Remote edit files (Felipe Coury & Dan Lucraft)
+ * Remote directory view (Felipe Coury & Dan Lucraft)
+ * Connection manager (Felipe Coury & Dan Lucraft)
+ * Added a truckload more Textmate themes (Dan Lucraft - thanks github.com/filmgirl !)
+ * Fix crashing bug when exceptions have no message (Kieran Pilkington)
+ * Runnables tab shows name of process (Delisa Mason)
+ * Runnables can run in background without visible feedback (Delisa Mason)
+ * Runnables run with cwd of your project directory, rather than redcar's cwd (Delisa Mason)
+ * Search and Replace in tab command (William Cherry)
+ * Reload file command (Kurt Werle)
+ * Fixed dependency list in README.md (Matthew Scharley)
+ * Show Installed Bundles command (John Wells)
+ * New API for plugins to hook into the project pane context menu (Matthew Scharley)
+ * Auto-detects private keys for remote editing with SSH (Dan Lucraft)
+ * Menu items can have a priority (Matthew Scharley)
+ * --fork option to detach from console (Matthew Scharley)
+ * Runnables are grouped by file (Delisa Mason)
+ * View keyboard shortcuts help command (Delisa Mason)
+ * Clear REPL history command (David Byrne)
+ * Change case commands (to uppercase, to lowercase, to titlecase, to opposite case, toggle snake_case/CamelCase/pascalCase) (Mat Schaffer)
+ * Smarter word matching for Ruby (and internal changes to support differing definitions of "words" across languages.) (Johannes Wollert)
+
+Version 0.3.8.4 (24 July 2010)
+==============================
+
+ * Parse the xulrunner releases page to determine the latest. (Dan Lucraft)
+
+Version 0.3.8.3 (24 July 2010)
+==============================
+
+ * Fix installation (Dan Lucraft)
+
+Version 0.3.8.2 (22 July 2010)
+==============================
+
+ * Update xulrunner url AGAIN. (Dan Lucraft)
+
+Version 0.3.8.1 (18 July 2010)
+==============================
+
+ * Update xulrunner url to point to existing distribution. (huma- and akautm)
+ * Hack to make Rexml load invalid character correctly on 1.9.1. (huma-)
+ * Fix installer script to put openssl jar in the right place (Dan Lucraft)
+
+Version 0.3.8 (12 July 2010)
+============================
+
+ * Can switch between open trees in a window (Dan Lucraft)
+ * Runnables: extensible runnable tasks/build items/tests/generators for projects. (Dan Lucraft)
+ * Runnables: run scripts in edit tabs as processes. (Dan Lucraft)
+ * Fix for: end key not working in documents with Windows-style line endings (Dan Lucraft)
+ * Caches downloaded jar files so that installation is faster when updating versions. (Felipe Coury)
+ * Fix for: dragging and dropping HtmlTabs between notebooks and windows. (Dan Lucraft)
+ * Select Word command (Johannes Wollert)
+ * Move tab up/Move tab down commands (Johannes Wollert)
+ * New APIs: Document#current_word, Document#word_at_offset (Johannes Wollert)
+ * Made the first tab open for a new install MUCH faster by generating the textmate bundle cache in the install script (Dan Lucraft)
+ * Search speedbar is opened with selected text as the default search (Johannes Wollert)
+ * Helper method for executing JavaScript in the browser during controller actions (Dan Lucraft)
+
+Version 0.3.7.1 (25 Jun 2010)
+=============================
+
+ * Fixed bug: URI class not found. (Dan Lucraft)
+
+Version 0.3.7 (24 Jun 2010)
+===========================
+
+Enhancements:
+
+  * Can create new files and directories, rename and delete files in the Project pane (Dan Lucraft)
+  * Can Bulk Rename files in projects with regular expression replacement (Dan Lucraft)
+  * Can drag and drop files and directories in the Project pane (Dan Lucraft)
+  * Won't leave an empty window open when you open a project (Aaron McLeod)
+  * Optionally show hidden files in the project pane (Dan Lucraft)
+
+Fixes:
+
+  * Fixed Shift+End on Linux to highlight to end of line rather than go to end of file (Dan Lucraft)
+  * Fixed launching redcar with "jruby" command (Aaron McLeod)
+
+New APIS:
+
+  * Context menu callback for trees (Dan Lucraft)
+  * Tree gained new methods for editing and expanding rows. (Dan Lucraft)
+  * new Tree DragController SPI for responding to drag and drop events (Dan Lucraft)
+  * Improvements to the HtmlView for interacting between Ruby controllers and JavaScript events (Dan Lucraft)
+  * In HtmlViews form submissions can go to the Ruby controller (Dan Lucraft)
+
+Version 0.3.6 (5 Jun 2010)
+==========================
+
+Enhancements:
+
+  * Folders open in the project view on a double click (Nizar Jouini)
+  * Drag and drop tabs (Tim Felgentreff)
+  * Change font and theme commands (Sam Clopton)
+  * Word wrap option (Dan Lucraft)
+  * Toggle line numbers (Dan Lucraft)
+  * Can put TM themes and bundles into .redcar/{Bundles,Themes} (Dan Lucraft)
+  * Home command goes to start of text first then start of line (Dan Lucraft)
+  * The project view has a fixed width that doesn't change if you resize the main window (Tim Felgentreff)
+  * Optional margin that colours text differently past a configurable column. (Dan Lucraft)
+  * Experimental app bundle for Mac OSX. (Tim Felgentreff)
+  * Moved to JRuby 1.5 (Dan Lucraft)
+  * Opens content from standard in (Dan Lucraft)
+  * Dev versions of Redcar have a blue icon (Dan Lucraft)
+
+New APIs:
+
+  * Annotations column (Dan Lucraft)
+  * Open popup menu and tooltips at cursor/pointer locations (Dan Lucraft)
+
+New contributors:
+
+  * Nizar Jouini
+
+Version 0.3.5dev (1 May 2010)
+=============================
+
+Enhancements:
+
+  * Jump to declaration support for Ruby and Java
+  * Double click respects word boundaries
+  * Window title reflects project name
+  * Duplicate region command
+  * Switch tab with Alt-1, Alt-2 (or Cmd-1, Cmd-2 on OSX)
+  * Prompts to save modified tabs on tab, window or application close
+  * Snippet menus show tab trigger more nicely (linux/windows)
+  * Watches to changes to open files, and prompts to revert
+  * Project view sorts directories before files (by popular request!)
+  * Shows menu bar on OSX when there are no windows open
+  * Halve startup time from 0.3.4 (warm startup)
+  * Added background Task APIs.
+  * Task Manager
+  * Added ProjectRefresh Task API
+  * No longer dumps command errors to the console
+  * Command history tab
+  * Speed up opening of first file by lazy loading embedded grammars
+  * Sped up Ruby highlighting by 17x
+  * Doesn't die on long lines (gives up after 500 characters now)
+  * Added show/hide invisible characters menu option
+  * Smart indentation as you type (based on Textmate bundle rules)
+  * Add profiling commands to the Debug menu (uses jruby-prof)
+  * Lazy menus API
+  * Commands to profile Redcar with jruby-prof.
+
+Fixes:
+
+  * Fix delete at end of line when using "\r\n" delimiter
+  * Increase and decrease indent commands respect soft tabs and tab width settings
+  * Directory tree sorts correctly
+  * Speed up opening a project (about 1s faster)
+
+New contributors:
+
+  * Antono Vasiljev
+  * Sergey Potapov
+  * Kirill Nikitin
+  * Juozas Gaigalas
+  * Tim Felgentreff
+
+Version 0.3.4dev (7 Mar 2010)
+=============================
+
+New features:
+
+  * Auto-pairer inserts matching characters ( -> ), " -> ", etc
+  * Snippets
+  * Recent directories menu
+  * Uses Gecko for HTMLTabs on Windows.
+
+Internal changes:
+
+  * New API for creating text Marks, to tag a position in a Document.
+  * new PersistentCache class for plugins to simply cache stuff.
+  * Textmate plugin for dealing with Textmate bundles.
+  * Application focus in/out events.
+
+Fixes:
+
+  * Respects Windows style line delimiters
+
+New contributors:
+
+  * Aaron McLeod
+
+Version 0.3.3dev (21 Feb 2010)
+==============================
+
+New features:
+
+  * Tab stops:
+    - Can set tab width for open tab.
+    - Default tab width is remembered per language.
+    - Soft tabs (spaces that behave like tabs).
+    - Default soft/hard option is remembered per language.
+  * FindFileDialog:
+     - opens with a list of files opened this session.
+     - caches file list between invocations (cleared on window focus)
+  * Can autocomplete with a menu popup.
+  * Opens files and folders passed on the command line.
+  * Reopens last open directory on startup.
+  * Single instance support: redirects to currently open instance if any.
+  * Added 'encryption' plugin, mainly as an example.
+  * Forward search: wraps, regex option, match case option.
+  * Very raw edit preferences command (Show me the YAML!)
+  * Help > About command
+  * Can specify HTTP_PROXY for downloading jars.
+  * REPL captures and prints STDOUT
+  * Can register Redcar for opening files on Windows. (See redcar -h)
+
+Internal changes:
+
+  * Keybindings are now stored in Keymap objects, in preparation for user preferences.
+  * Speedbar now uses an EditView for textboxes.
+  * Speedbars can have combos in them.
+  * Speedbars have access to the properties of the widgets in them.
+  * Added tab and escape key handler support to the EditView.
+
+Fixes:
+
+  * Fixed some highlighter bugs.
+  * Search searches last line in doc.
+  * Doesn't die on Windows-1252 encodings.
+  * Plugin Manager UI works on Linux and Windows.
+
+New contributors:
+
+  * Mat Schaffer
+  * Felipe Coury
+  * Sam Clopton
+  * Roger D Pack
+
+Version 0.3.2dev (23 Jan 2010)
+==============================
+
+New features:
+
+  * Dialog API for plugins and commands to use.
+  * Speedbar API for plugins and commands to use (e.g. Goto Line command).
+  * Remembers last directory when opening a file/directory. (thanks Roger Pack)
+  * Word movement (alt-left, alt-right) now works as it should in an editor for
+    programmers.
+  * Very simple forward search command.
+  * Somewhat faster startup time.
+  * Nicer error message when jruby jar is missing.
+  * Goto Line command
+  * Select All and Select Line commands.
+  * Cut and Copy will take the line if there is no selection
+  * Block typing mode
+  * Auto completion
+  * HTML View, with Ruby/JavaScript interface, to write plugins in HTML+CSS+JS.
+  * PluginManagerUI plugin, running on the HTML View.
+
+Internal changes:
+
+  * Ported plugins to plugin_manager gem (github.com/danlucraft/plugin_manager)
+  * Pure Ruby clipboard and Copy/Cut/Paste commands.
+
+Fixes:
+
+  * The show more tabs menu in a notebook is handled properly.
+  * Deleting a lot of lines no longer causes the last few to lose highlighting.
+  * Clojure highlighting works.
+  * HTML colours no longer 'bleed' past the tags
+
+Version 0.3.1dev (9 Jan 2010)
+=============================
+
+Enhancements:
+
+  * Fuzzy file finder.
+  * Directory tree refreshes on window focus.
+  * Keybindings to switch tabs and notebooks.
+  * Undo/redo.
+  * Home/end keys.
+  * Modified tabs have little stars before their names.
+  * Increase indent and decrease indent commands (need further work).
+  * Themes support bold, italic and underline again.
+  * All commands are greyed out when inapplicable.
+  * Files can not be opened twice.
+  * Added Java, Perl and Ruby on Rails bundles.
+  * New simpler way for bundles to add commands to menus (used in repl.rb)
+  * New "redcar install" command to download jars.
+
+Fixes:
+
+  * Change key logic in JavaMateView - should fix a bunch of subtle highlighting bugs.
+  * Runs on Java 5.
+  * Open Directory doesn't log an error if you cancel.
+
+Version 0.3.0dev (25 Dec 2009)
+==============================
+
+Rewritten in JRuby/SWT.
+
+Enhancements:
+
+  * _Much_ simpler installation: packaged as a gem.
+  * Faster highlighter
+  * Fewer bugs
+  * Clearer architecture
+  * Multiple window/project support.
+
+
+Version 0.2 (28 May 2009)
+=========================
+
+New features, enhancements:
+
+  * Fuzzy file finder notices new files and runs MUCH faster.
+  * Undo close tab (Ctrl+Shift+T)
+  * Type " or ( or [ etc to wrap selection in pair.
+  * Warm startup 3 times faster.
+  * Added Incremental Search menu item.
+  * Now prompts to save if file is modified when closed.
+  * HtmlTab now uses Webkit instead of Mozilla
+  * Convert case commands
+  * Keybindings match up with Gnome better (Ctrl+C/V)
+  * Added Scala and Haskell bundles.
+  * Added theme from Railscasts
+
+Bug fixes:
+
+  * Fixed Jaunty DBus bug (no more --multiple-instance!) (#60)
+  * Fixed paste-over bug (#74)
+  * Fixed bug that allows multiple project tabs (#69)
+  * Fixed so only one copy of a file can be open (#62)
+  * Fixed file finder not finding new files
+  * Fixed silently failing to save when bad permissions (#10)
+
+New contributors:
+
+  * Mark Wilkinson
+  * Pat Ciambrone
+  * poweradapter
+  * Henrik Hodne
+
+Version 0.1 (6 April 2009)
+==========================
+http://redcareditor.com/releases/redcar-0.1.tar.gz
+
+First release.
+
+Features:
+
+  * Textmate syntax highlighting
+  * Textmate snippets
+  * Text, Source, Ruby Textmate commands + some others
+  * Project pane
+
+Contributors:
+
+  * Daniel Lucraft
+  * Cairo Noleto

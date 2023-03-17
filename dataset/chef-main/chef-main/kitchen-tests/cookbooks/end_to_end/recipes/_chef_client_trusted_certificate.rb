@@ -1,0 +1,30 @@
+chef_client_trusted_certificate "self-signed.badssl.com" do
+  certificate <<~CERT
+-----BEGIN CERTIFICATE-----
+MIIDeTCCAmGgAwIBAgIJAKAyAEjwDBuPMA0GCSqGSIb3DQEBCwUAMGIxCzAJBgNV
+BAYTAlVTMRMwEQYDVQQIDApDYWxpZm9ybmlhMRYwFAYDVQQHDA1TYW4gRnJhbmNp
+c2NvMQ8wDQYDVQQKDAZCYWRTU0wxFTATBgNVBAMMDCouYmFkc3NsLmNvbTAeFw0y
+MzAxMjIxNzM2NTVaFw0yNTAxMjExNzM2NTVaMGIxCzAJBgNVBAYTAlVTMRMwEQYD
+VQQIDApDYWxpZm9ybmlhMRYwFAYDVQQHDA1TYW4gRnJhbmNpc2NvMQ8wDQYDVQQK
+DAZCYWRTU0wxFTATBgNVBAMMDCouYmFkc3NsLmNvbTCCASIwDQYJKoZIhvcNAQEB
+BQADggEPADCCAQoCggEBAMIE7PiM7gTCs9hQ1XBYzJMY61yoaEmwIrX5lZ6xKyx2
+PmzAS2BMTOqytMAPgLaw+XLJhgL5XEFdEyt/ccRLvOmULlA3pmccYYz2QULFRtMW
+hyefdOsKnRFSJiFzbIRMeVXk0WvoBj1IFVKtsyjbqv9u/2CVSndrOfEk0TG23U3A
+xPxTuW1CrbV8/q71FdIzSOciccfCFHpsKOo3St/qbLVytH5aohbcabFXRNsKEqve
+ww9HdFxBIuGa+RuT5q0iBikusbpJHAwnnqP7i/dAcgCskgjZjFeEU4EFy+b+a1SY
+QCeFxxC7c3DvaRhBB0VVfPlkPz0sw6l865MaTIbRyoUCAwEAAaMyMDAwCQYDVR0T
+BAIwADAjBgNVHREEHDAaggwqLmJhZHNzbC5jb22CCmJhZHNzbC5jb20wDQYJKoZI
+hvcNAQELBQADggEBAJs0hWIxX/T64bNZTJ5sTNJVzfxjUVNM0+X0eAi5e1HM9B4p
+/YtnKz11OCiH6E5jDGyYL4mH2CmA5AuznfnupOJK+OQaoJmgy1DOrm0fXLnswYRJ
+k6uuaJhB585gzWUqhoVxJusTZPItKLGfBH6i1C5o/LPr0PKagddIrzs5woArmtbc
+FK0EQxrk4aWHGQbVccu1K1SAWW3PmYNo/gn3tiCSYcV+4BCOmNhtkd0C4r2VqYuA
+8ynhAuRdoznncGjYvaXibb7hMFTas/OiETCWn1V4nY1VxGUqPzG2OunOOF8G16mm
+icTHkmckrm2kiDUkB+Uy/m88mElTpeuGWOX7BrU=
+-----END CERTIFICATE-----
+  CERT
+end
+
+# see if we can fetch from our new trusted domain
+remote_file ::File.join(Chef::Config[:file_cache_path], "index.html") do
+  source "https://self-signed.badssl.com/index.html"
+end

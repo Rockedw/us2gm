@@ -1,0 +1,1 @@
+Redcar.plugin_manager.load("test_runner")

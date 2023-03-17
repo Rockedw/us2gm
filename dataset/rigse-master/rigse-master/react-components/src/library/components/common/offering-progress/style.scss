@@ -1,0 +1,74 @@
+.offeringProgress {
+  tr {
+    height: 35px;
+  }
+
+  .namesTableContainer {
+    width: 100%;
+    display: inline-block;
+    vertical-align: top;
+
+    .namesTable {
+      width: 100%;
+      table-layout: fixed;
+
+      th {
+        text-align: left;
+      }
+
+      .name {
+        width: 100%;
+        display: inline-block;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .status {
+        font-style: italic;
+      }
+
+      .date {
+        padding-left: 10px;
+      }
+    }
+  }
+}
+
+.feedback {
+  margin-left: 5px;
+
+  .score {
+    margin-right: 13px;
+  }
+
+  .textFeedbackIcon {
+    line-height: 28px;
+    vertical-align: middle;
+    margin-right: 15px;
+    font-size: 1.1em;
+  }
+
+  .rubricContainer {
+    // Disable ability to click on the Rubric icon.
+    pointer-events: none;
+    display: inline-block;
+    vertical-align: middle;
+    height: 25px;
+    transform-origin: top left;
+
+    &:hover {
+      box-shadow: 0 0 3px #eab136;
+    }
+
+    td {
+      // Fix styling of the rubric box.
+      padding: 0.5em !important;
+      line-height: 1em;
+    }
+  }
+}
+
+.tooltipContent {
+  max-width: 400px;
+}

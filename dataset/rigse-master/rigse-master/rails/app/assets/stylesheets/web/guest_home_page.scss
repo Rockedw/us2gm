@@ -1,0 +1,59 @@
+.landing-container {
+    * {
+        // http://www.paulirish.com/2012/box-sizing-border-box-ftw/
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+    margin: 0px;
+    padding: 0px;
+    height: 550px;
+    position: relative;
+    .home-page-content {
+        position: absolute;
+        display: inline-block;
+        top: 0px; bottom: 0px;
+        width: 640px;
+        overflow: auto;
+        // border: 1px solid #eee;
+        // border-radius: 4px;
+    }
+    .signup-box {
+        width: 300px;
+        position: absolute;
+        display: inline-block;
+        bottom: 0px;
+        top: 0px;
+        right: 0px;
+        left: 660px;
+        border: 1px solid #eee;
+        border-radius: 4px;
+        position: absolute;
+        .message {
+            padding: 5px 5px 20px 5px;
+            .message-text {
+                background: #D9F0F0;
+                padding: 5px;
+            }
+        }
+        small {
+          font-size: 11px;
+        }
+        .title {
+          color: #eb8723;
+          font-size: 1.8em;
+          display: inline-block;
+        }
+
+        .step {
+          color: #95939C;
+          font-size: 1em;
+          display: inline-block;
+          float: right;
+          margin-top: 0.4em;
+        }
+    }
+    .home-page-content, .signup-box {
+        display: inline-block;
+        vertical-align: top;
+    }
+}

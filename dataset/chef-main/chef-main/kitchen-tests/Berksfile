@@ -1,0 +1,3 @@
+source "https://supermarket.chef.io"
+
+cookbook "end_to_end", path: "cookbooks/end_to_end"

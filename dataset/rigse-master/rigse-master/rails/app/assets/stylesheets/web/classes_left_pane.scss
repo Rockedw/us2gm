@@ -1,0 +1,31 @@
+/* Padded Content Submenu*/
+div#classes_selected {
+  padding: 0px 20px 5px 20px;
+
+  div {
+    padding: 3px; }
+
+  a {
+    display: block;
+    margin: 0;
+    padding: 0px; }
+
+  .selected a {
+    color: #313131;
+    font-weight: 500; }
+
+}
+
+#secondary .clazz_list_container {
+  li:last-child {
+    border-bottom: solid 1px #fff;
+    padding-bottom: 20px; }
+}
+
+.create_link,
+.manage_classes_link {
+  margin: 20px;
+  a.button {
+    /* this was the only property not already deifned in a.button */
+    _background: #f6f2e2; }
+}

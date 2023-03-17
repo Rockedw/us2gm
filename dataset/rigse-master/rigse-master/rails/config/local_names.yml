@@ -1,0 +1,7 @@
+---
+default:
+  Embeddable::ImageQuestion : Image Question
+  Embeddable::MultipleChoice : Multiple Choice Question
+  Portal::Clazz : Class
+  Portal::Nces06District : NCES District
+  Portal::Nces06School : NCES School

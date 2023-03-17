@@ -1,0 +1,44 @@
+
+.grey {
+  background-color: #eee;
+}
+
+td.plugin {
+  text-align: left;
+}
+
+td.links {
+  text-align: right;
+} 
+
+body {
+  font-family: sans-serif;
+}
+
+h1, h2, h3, h4, h5 {
+  border-bottom: 1px solid black;
+}
+
+table {
+  border-collapse: collapse;
+  font-size: 0.8em;
+}
+
+th {
+  padding: 7px 12px;
+  border: 1px solid #bbb;
+}
+
+td {
+  padding: 7px 12px;
+  border: 1px solid #bbb;
+}
+
+tr.error {
+  background-color: #FCC;
+}
+
+tr.cancelled {
+  background-color: #EEE;
+}
+

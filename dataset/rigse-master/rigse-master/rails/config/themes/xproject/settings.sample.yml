@@ -1,0 +1,37 @@
+---
+development: &id003
+  :active_school_levels:
+    - "2"
+    - "3"
+    - "4"
+  :active_grades:
+    - "6"
+    - "7"
+    - "8"
+    - "9"
+    - "10"
+    - "11"
+    - "12"
+  :theme: xproject
+  :site_name: Cross Project Portal
+  :site_url: http://localhost:3000
+  :runnable_mime_type:
+  :top_level_container_name: investigation
+  :site_school: Cross Project Portal-school
+  :description: ""
+  :site_district: Cross Project Portal-district
+  :help_email: xproject-investigations@concord.org
+  :help_email: xproject@concord.org
+  :admin_email: aunger@concord.org
+  :default_admin_user:
+    :first_name: Aaron
+    :login: aunger
+    :last_name: Unger
+    :email: aunger@concord.org
+  :states_and_provinces:
+    - MA
+
+test: *id003
+production: *id003
+staging: *id003
+cucumber: *id003

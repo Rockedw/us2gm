@@ -1,0 +1,16 @@
+/ requires: portal_clazz_id
+
+.action_menu
+  #search_title
+    ="Search #{ExternalActivity.display_name.pluralize}"
+  .progress_container
+    #search_spinner.tiny{:style=>'display: none;'}
+      searching ...
+      = image_tag "ajax-loader.gif"
+
+
+%form{ :id => 'external_activity_search_form'}
+  = hidden_field_tag 'portal_clazz_id', local_assigns[:portal_clazz_id]
+  %div{:style => "width: 100%; padding: 0.5em;"}
+    = label_tag :filter, 'matching: ', :class=>"right"
+    = text_field_tag :name, name

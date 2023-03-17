@@ -1,0 +1,14 @@
+- content_for(:project_info) do
+  %h1
+    About the STEM Resource Finder
+  %p
+    = I18n.t('HomePage.Teacher.Intro')
+  %p
+    = link_to "Preview the activities.", root_url
+  %p
+    %strong
+      Why sign up?
+    When you register as a teacher, you can browse activities, create classes,
+    assign activities to your students, follow their progress,
+    and view reports of their work.
+

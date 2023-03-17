@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= @title %></title>
+    <% watermark  = File.expand_path(File.join(Redcar.root, %w(plugins html_view views watermark-48.png))) %>
+    <% redcar_css = File.expand_path(File.join(Redcar.root, %w(plugins html_view views default.css))) %>
+    <% jquery_path = File.expand_path(File.join(Redcar.root, %w(plugins html_view assets jquery-1.4.min.js))) %>
+    <%= stylesheet_link_tag :reset, :default, :basic_ansi %>
+    <link rel="stylesheet" href="file://<%= redcar_css %>" type="text/css" media="screen">
+    <%= javascript_controller_actions %>
+   <script type="text/javascript" src="file://<%= jquery_path %>"></script>
+  </head>
+  <body>
+    <div class="main">
+    <div id="top">
+      <img src="file://<%=watermark%>" id="watermark"/>
+      <h1><%= @title %></h1>
+      <form style="display:inline; padding-left:40px" class="actions" action="javascript:return false;">
+        <input type="submit" value="Run again" onclick="Controller.run();"/>
+      </form>
+    </div>
+    <div class="inset">
+      <div id="container">
+        <div class="command">
+          <%= @cmd %>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

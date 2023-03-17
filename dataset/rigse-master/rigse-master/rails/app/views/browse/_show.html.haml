@@ -1,0 +1,19 @@
+= javascript_include_tag "share_material"
+
+- parent_material = search_material.parent_material
+- material_count = parent_material.material.offerings.count
+- material = parent_material.material
+- external ||= false
+
+= hidden_field_tag "investigation_id", parent_material.id
+= hidden_field_tag "material_id", search_material.id
+= hidden_field_tag "assign_material_type", search_material.model_name
+
+.breadcrumb-menu
+  = link_to "&laquo; Find more educational resources".html_safe, "/", :class => "return_link", :title => "Browse more educational resources"
+
+#resource
+
+%script
+  - if @material_data
+    PortalComponents.renderBrowsePage({resource: #{raw @material_data.to_json}}, "resource")

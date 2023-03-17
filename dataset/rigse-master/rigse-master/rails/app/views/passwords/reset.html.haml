@@ -1,0 +1,23 @@
+= title_tag "Change Password"
+%h1= 'Change Password'
+%p= 'Please enter a new password and confirm it.'
+
+= form_for :user_reset_password, :url => { :action => 'update_users_password' } do |f|
+  %div{:id => dom_id_for(@user_reset_password,:form), :class =>"action_menu reset_password"}
+    .padded_content
+      = f.error_messages :header_tag => 'h4', :header_message => "Your password could not be changed.", :message => ""
+
+    %fieldset
+      %legend= "Password for #{@user_reset_password.name} (#{@user_reset_password.login})"
+      %ul.quiet_list
+        %li= f.label :password, "New Password", :class=>"aligned"
+        %li= f.password_field :password, :live => false, :class=>"aligned"
+        %br
+        %li= f.label :password_confirmation, "Confirm New Password",:class=>"aligned"
+        %li= f.password_field :password_confirmation, :live => false, :class=>"aligned"
+      .aligned
+        %ul.quiet_list
+          %li= submit_tag "Save"
+          %li= submit_tag "Cancel", :class => 'secondary'
+
+  = hidden_field_tag :reset_code, params[:reset_code]

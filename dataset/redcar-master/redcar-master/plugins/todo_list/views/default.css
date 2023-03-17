@@ -1,0 +1,15 @@
+table {
+  font-size: 80%;
+}
+
+.status {
+  padding:3px;
+  margin:3px;
+  font-style:italic;
+}
+
+.final_status {
+  font-size:70%;
+  font-style:italic;
+  float:right;
+}

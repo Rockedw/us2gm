@@ -1,0 +1,24 @@
+- if defined?(search_material)
+  - material = search_material.material
+- else
+  - material = interactive
+
+.related-materials
+  #related-materials-summary
+  #related_materials_list
+
+:javascript
+  jQuery(document).ready(function() {
+    var dest    = "#related-materials-list";
+    var apiUrl  = "/api/v1/materials/#{material.class.name.underscore}/#{material.id}";
+
+    jQuery.ajax({
+      dataType: "json",
+      url: apiUrl,
+      success: function(data) {
+        summary = jQuery("#related-materials-summary");
+        summary.html(`<h2>Related Materials</h2><p>Found ${data.related_materials.length} related material(s).</p>`);
+        PortalComponents.renderMaterialsList(data.related_materials, "#related_materials_list");
+      }
+    });
+  });

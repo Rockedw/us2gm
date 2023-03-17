@@ -1,0 +1,122 @@
+require 'yaml'
+YAML::ENGINE.yamler= 'psych' if defined?(YAML::ENGINE)
+
+source 'http://rubygems.org'
+
+#### COMMON
+gem 'rails', '6.1.4'
+
+gem 'activemodel-serializers-xml'
+gem 'activerecord-import'
+gem "activerecord-session_store"
+gem 'acts-as-taggable-on'
+gem 'acts_as_list'
+gem 'appsignal'
+gem 'arrayfields'
+gem 'aws-sdk-s3'
+gem 'axlsx',                '> 2.5'
+gem 'bootsnap'
+gem 'coffee-rails'
+# was sub-dependency of react-rails, needed in test setup code
+gem 'connection_pool'
+gem 'daemons'
+gem 'default_value_for'
+gem 'delayed_job', '~> 4.1.1'
+gem 'delayed_job_active_record', '~> 4.1.0'
+gem 'delayed-web'
+gem 'devise'
+gem 'devise-encryptable'
+gem 'devise-token_authenticatable'
+gem 'dynamic_form', '~> 1.1.4'
+gem 'exception_notification'
+gem 'font-awesome-rails'
+gem 'haml'
+gem 'httparty'
+gem 'json'
+gem 'jwt'
+gem 'jquery-fileupload-rails'
+gem 'mimemagic', '0.3.10'
+gem 'mysql2', platforms: [:ruby, :mingw]
+
+gem 'nokogiri'
+gem 'oj'
+gem 'omniauth'
+gem 'omniauth-google-oauth2' # For google login integration.
+gem 'omniauth-oauth' # For schoology integration.
+gem 'open4',                '~> 1.0'
+gem 'paperclip'
+gem 'pundit',               '~> 1'
+# cors is allowed for all groups because cors is always enabled for the interactives/export_model_library
+gem 'rack-cors', require: 'rack/cors'
+gem "rails-observers"
+gem 'redcarpet',            '~> 2.1.1'
+gem 'responders'
+gem 'rollbar'
+gem 'sanitize'
+gem 'sass',                 '~> 3.4.0'
+gem 'sass-rails' # if running rails 3.1 or greater
+gem 'sunspot_rails'
+gem 'sunspot_solr' # optional pre-packaged Solr distribution
+gem 'test-unit',            '~> 3.0'
+gem 'tinymce-rails',        '~>3.5.6'
+gem 'sprockets-rails', :require => 'sprockets/railtie'
+gem 'sprockets', '~> 3'
+gem 'uglifier'
+# 2021-06-24 NP: We could / should probably get rid of this.
+# We currently do use 'useragent' to detect older browsers. But maybe we
+# shouldn't be doing that anymore...
+gem 'useragent' # detect browser types
+gem 'uuidtools',            '~> 2.1.2'
+gem 'virtus',               '~>1.0.3'
+gem 'will_paginate'
+gem 'yui-compressor'
+
+group :production do
+  gem 'puma'
+end
+
+group :development do
+  gem 'better_errors', '~> 1.1.0'
+  gem 'bullet'
+  gem 'rake'
+  gem 'ruby-debug', platforms: [:mri_18, :mingw_18]
+  gem 'spring', '~> 1.7.2'
+end
+
+group :test, :cucumber do
+  gem 'bullet'
+  gem 'capybara'
+  gem 'capybara-mechanize'
+  gem 'capybara-screenshot'
+  gem 'ci_reporter'
+  gem 'cucumber'
+  gem 'cucumber-rails', require: false
+  gem 'database_cleaner'
+  gem 'delorean'
+  gem 'email_spec'
+  gem 'json-schema'
+  gem 'rails-controller-testing'
+  gem 'rspec'
+  gem 'rspec-activemodel-mocks'
+  gem 'rspec-collection_matchers'
+  gem 'rspec-rails'
+  gem 'selenium-webdriver'
+  gem 'spring-commands-cucumber'
+  gem 'spring-commands-rspec'
+  gem 'webdrivers', '~> 3.0'
+  gem 'webmock', require: false
+end
+
+group :test, :cucumber, :development do
+  # this is included in development so the mock data can be loaded in dev db
+  gem 'factory_bot'
+  gem 'guard'
+  gem 'guard-cucumber'
+  gem 'guard-rspec'
+  gem 'highline'
+  gem 'launchy'
+  gem 'pry'
+  gem 'pry-byebug'
+  gem 'remarkable_activerecord', '~> 3.1.13', require: nil
+  gem 'simplecov', require: false
+end

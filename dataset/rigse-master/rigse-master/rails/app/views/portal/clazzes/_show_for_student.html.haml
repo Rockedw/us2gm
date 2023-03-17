@@ -1,0 +1,17 @@
+
+- options = { :omit_delete => true }
+%div.item_collection{ :id => dom_id_for(portal_clazz)}
+  %div{:id => dom_id_for(portal_clazz, :item), :class => 'item'}
+    .action_menu
+      .action_menu_header_left
+        = "#{portal_clazz.name}"
+        - if portal_clazz.section.to_s.length > 0
+          = " (#{portal_clazz.section})"
+      .action_menu_header_right
+        = portal_clazz.teachers.size > 0 ? portal_clazz.teachers.map{ |t| t.name}.join(', ') : 'no teachers'
+    = render_portal_clazz_partial 'portal/clazzes/links', portal_clazz
+    - if current_settings.allow_default_class
+      = render :partial => 'shared/offerings_for_student', :locals => { :offerings => portal_clazz.offerings_with_default_classes(current_visitor) }
+    - else
+      = render :partial => 'shared/offerings_for_student', :locals => { :offerings => portal_clazz.student_visible_offerings }
+

@@ -1,18 +1,10 @@
-import os
 from transformers import AutoTokenizer, AutoModel
 import torch
 import torch.nn.functional as F
+from main2 import *
 
 
-def scan_feature(dir_path, save_path):
-    for root, dirs, files in os.walk(dir_path):
-        for file in files:
-            if file.endswith('.feature'):
-                with open(os.path.join(root, file), 'r',encoding='utf8') as f:
-                    content = f.read()
-                with open(os.path.join(save_path, file,), 'w',encoding='utf8') as f:
-                    f.write(content)
-
+# Mean Pooling - Take attention mask into account for correct averaging
 def mean_pooling(model_output, attention_mask):
     token_embeddings = model_output[0]  # First element of model_output contains all token embeddings
     input_mask_expanded = attention_mask.unsqueeze(-1).expand(token_embeddings.size()).float()
@@ -38,13 +30,5 @@ def cal_sim(sentence1, sentence2):
     return cosine_similarity
 
 
-
 if __name__ == '__main__':
-    # for file in os.listdir('dataset'):
-    #     # 如果 os.path.join('user_story_feature', file) 不存在，创建
-    #     if not os.path.exists(os.path.join('user_story_feature', file)):
-    #         os.mkdir(os.path.join('user_story_feature', file))
-    #
-    #     scan_feature(os.path.join('./dataset', file), os.path.join('user_story_feature', file))
-    print(cal_sim('I sort students', 'I sort teachers'))
-
+    get_core('User signs up with invalid data')

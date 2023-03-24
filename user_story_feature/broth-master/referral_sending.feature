@@ -1,7 +1,7 @@
 Feature: Referral sending
   In order to share a site with my friends
   As a user
-  I want send them an email with a link and some text
+  I want to send them an email with a link and some text
 
 	Scenario: User can send friends email
 		Given site settings have been enabled for "referrals"
@@ -12,7 +12,6 @@ Feature: Referral sending
 		And I fill in "Emails" with "joe.sixpack@test.com"
 		And I fill in "Email text" with "This is a sample email text"
 		And I press "Tell your friends"
-	  And I should see "Your emails have been sent."
 
 
 

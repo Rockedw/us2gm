@@ -10,13 +10,14 @@ import spacy
 from gherkin.parser import Parser
 from typing import List, Tuple
 from goal_model import *
-
-
+from utils import *
 
 
 class Scenario:
     # 一个场景包括多个given, when, then
-    def __init__(self, givens_list=None, whens_list=None, thens_list=None):
+    def __init__(self, givens_list=None, whens_list=None, thens_list=None, value='', children=None):
+        if children is None:
+            children = []
         if givens_list is None:
             givens_list = []
         if whens_list is None:
@@ -26,6 +27,8 @@ class Scenario:
         self.givens_list = givens_list
         self.whens_list = whens_list
         self.thens_list = thens_list
+        self.value = value
+        self.children = children
 
     def __str__(self):
         return "\n".join([str(given) for given in self.givens_list]) + "\n" + \
@@ -92,7 +95,7 @@ def parse_feature_file(file_path: str) -> Feature:
     parser = Parser()
     if 'feature' in parser.parse(feature_text):
         feature_data = parser.parse(feature_text)['feature']
-        print(feature_data)
+        # print(feature_data)
         feature_name = feature_data['name']
         scenarios = []
         background = None
@@ -108,6 +111,7 @@ def parse_feature_file(file_path: str) -> Feature:
                 whens_list = []
                 thens_list = []
                 scenario = child['scenario']
+                value = scenario['name']
                 for i in range(0, len(scenario['steps'])):
                     step = scenario['steps'][i]
                     if step['keyword'].strip() == 'Given':
@@ -128,7 +132,7 @@ def parse_feature_file(file_path: str) -> Feature:
                             thens.append(scenario['steps'][i + 1]['text'])
                             i += 1
                         thens_list.append(thens)
-                scenarios.append(Scenario(givens_list, whens_list, thens_list))
+                scenarios.append(Scenario(givens_list, whens_list, thens_list, value))
         as_a = ''
         i_want = ''
         so_that = ''
@@ -167,9 +171,40 @@ def convert_user_story(story: str) -> tuple[str, str, str]:
     return role, goal, benefit
 
 
+def scenario_to_goal_model(scenario) -> Goal:
+    scenario_value = scenario.value
+    whens_list = scenario.whens_list
+    temp_goal = Goal(value=scenario_value, type='goal')
+    if whens_list is not None and len(whens_list) > 0:
+        for whens in whens_list:
+            if len(whens) > 1:
+                for when in whens:
+                    goal = Goal(value=when, type='task')
+                    temp_goal.add_child(goal)
+            else:
+                temp_goal.add_child(Goal(value=whens[0], type='task'))
+    givens_list = scenario.givens_list
+    if givens_list is not None and len(givens_list) > 0:
+        for givens in givens_list:
+            if len(givens) > 1:
+                temp_context = Context(value='temp', type='statement')
+                for given in givens:
+                    context = Context(value=given, type='fact')
+                    temp_context.add_child(context)
+                temp_goal.context = temp_context
+            else:
+                temp_goal.context = Context(value=givens[0], type='fact')
+    scenario_children = scenario.children
+    if scenario_children is not None and len(scenario_children) > 0:
+        for scenario_child in scenario_children:
+            temp_goal.add_child(scenario_to_goal_model(scenario_child))
+    return temp_goal
+
+
 def feature_to_goal_model(feature: Feature):
+    merge_scenarios(feature)
     user_story = feature.user_story
-    root_goal = Goal(value=user_story.i_want, type='goal')
+    root_goal = Goal(value=user_story.i_want, type='goal', so_that=user_story.so_that)
     scenarios = user_story.scenarios
     background = user_story.background
     if background is not None:
@@ -184,85 +219,145 @@ def feature_to_goal_model(feature: Feature):
     if scenarios is not None and len(scenarios) > 0:
         top_goals = []
         for scenario in scenarios:
-            whens_list = scenario.whens_list
-            temp_goal = None
-            if whens_list is not None and len(whens_list) > 0:
-                for whens in whens_list:
-                    if len(whens) > 1:
-                        temp_goal = Goal(value='temp', type='goal')
-                        for when in whens:
-                            goal = Goal(value=when, type='task')
-                            temp_goal.add_child(goal)
-                    else:
-                        temp_goal = Goal(value=whens[0], type='task')
-                    top_goals.append(temp_goal)
-            else:
-                temp_goal = Goal(value='no whens', type='task')
-                top_goals.append(temp_goal)
-            givens_list = scenario.givens_list
-            if givens_list is not None and len(givens_list) > 0:
-                for givens in givens_list:
-                    if len(givens) > 1:
-                        temp_context = Context(value='temp', type='statement')
-                        for given in givens:
-                            context = Context(value=given, type='fact')
-                            temp_context.add_child(context)
-                        temp_goal.context = temp_context
-                    else:
-                        temp_goal.context = Context(value=givens[0], type='fact')
+            top_goals.append(scenario_to_goal_model(scenario))
         root_goal.children = top_goals
 
     print(str(root_goal))
     return root_goal
 
-#合并场景
-def merge_scenarios(feature:Feature):
+
+# 合并场景
+def is_similar(c, core, threshold=0.6):
+    if cal_sim(c, core) > threshold:
+        return True
+    else:
+        return False
+
+
+def merge_scenarios(feature: Feature):
     user_story = feature.user_story
     scenarios = user_story.scenarios
-    if len(scenarios)>1:
-        cores = []
+    if len(scenarios) > 1:
+        core_scenarios = {}
         for scenario in scenarios:
-            core = get_core(scenario.)
+            # subj, verb, obj = get_core(scenario.value)
+            # core = f"{subj} {verb} {obj}"
+            core = get_core(scenario.value)
+            flag = False
+            for c in core_scenarios.keys():
+                if is_similar(c, core):
+                    core_scenarios[c].append(scenario)
+                    flag = True
+                    break
+            if not flag:
+                core_scenarios[core] = [scenario]
+        new_scenarios = []
+        for c in core_scenarios.keys():
+            if len(core_scenarios[c]) <= 1:
+                new_scenarios.extend(core_scenarios[c])
+            else:
+                new_scenario = Scenario(value=c)
+                for scenario in core_scenarios[c]:
+                    new_scenario.children.append(scenario)
+                new_scenarios.append(new_scenario)
+        user_story.scenarios = new_scenarios
     return feature
 
-def get_core(scentence: str):
-    doc = nlp(scentence)
-    subject = ""
-    verb = ""
-    obj = ""
-    has_obj = False
-    has_subj = False
-    passive = False
+
+def merge_goals_by_so_that(goals: list[Goal]):
+    if len(goals) > 1:
+        new_goals = []
+        goals_by_so_that = {}
+        for g in goals:
+            if g.so_that is not None and g.so_that != '':
+                flag = False
+                for so_that in goals_by_so_that.keys():
+                    if is_similar(so_that, g.so_that, 0.8):
+                        print(f"合并{so_that}和{g.so_that}")
+                        goals_by_so_that[so_that].append(g)
+                        flag = True
+                        break
+                if not flag:
+                    goals_by_so_that[g.so_that] = [g]
+            else:
+                new_goals.append(g)
+        for so_that in goals_by_so_that.keys():
+            if len(goals_by_so_that[so_that]) <= 1:
+                new_goals.extend(goals_by_so_that[so_that])
+            else:
+                new_goal = Goal(value=goals_by_so_that[so_that][0].value, type='goal', so_that=so_that)
+                for goal in goals_by_so_that[so_that]:
+                    new_goal.children.append(goal)
+                new_goals.append(new_goal)
+        return new_goals
+    else:
+        return goals
+
+
+def get_core(sentence: str):
+    doc = nlp("User signs up with invalid data")
+
     for token in doc:
-        if "subj" in token.dep_:
-            if "pass" in token.dep_:
-                passive = True
-            if passive:
-                if not has_obj:
-                    obj = token.text
-                    has_obj = True
-            else:
-                if not has_subj:
-                    subject = token.text
-                    has_subj = True
-        elif "obj" in token.dep_:
-            if "pass" in token.dep_:
-                passive = True
-            if passive:
-                if not has_subj:
-                    subject = token.text
-                    has_subj = True
-            else:
-                if not has_obj:
-                    obj = token.text
-                    has_obj = True
-        elif "VERB" == token.pos_:
-            verb = token.lemma_
-    print(f"{subject} {verb} {obj}")
-    return subject, verb, obj
+        print(token.dep_)
+
+    core_parts = []
+    for token in doc:
+        if token.dep_ in ("nsubj", "ROOT", "dobj"):
+            core_parts.append(token.text)
+
+    print(core_parts)
+
+
+# def get_core(sentence: str):
+#     doc = nlp(sentence)
+#     subject = ""
+#     verb = ""
+#     obj = ""
+#     has_obj = False
+#     has_subj = False
+#     passive = False
+#     for token in doc:
+#         if "subj" in token.dep_:
+#             if "pass" in token.dep_:
+#                 passive = True
+#             if passive:
+#                 if not has_obj:
+#                     obj = token.text
+#                     has_obj = True
+#             else:
+#                 if not has_subj:
+#                     subject = token.text
+#                     has_subj = True
+#         elif "obj" in token.dep_:
+#             if "pass" in token.dep_:
+#                 passive = True
+#             if passive:
+#                 if not has_subj:
+#                     subject = token.text
+#                     has_subj = True
+#             else:
+#                 if not has_obj:
+#                     obj = token.text
+#                     has_obj = True
+#         elif "VERB" == token.pos_:
+#             verb = token.lemma_
+#     for token in doc:
+#         print(token.text, token.dep_, token.head.text, token.head.pos_)
+#     # print(f"{subject} {verb} {obj}")
+#     return subject, verb, obj
+
+# def get_core(sentence:str):
+#     doc = nlp(sentence)
+#     new_sentence = []
+#     for token in doc:
+#         print(token.text, token.dep_, token.head.text, token.head.pos_)
+#         if token.dep_ not in ["amod", "advmod", "npadvmod"]:
+#             new_sentence.append(token.text)
+#     return " ".join(new_sentence)
 
 
 if __name__ == '__main__':
+    nlp = spacy.load("en_core_web_sm")
     # user_story_feature = './user_story_feature'
     # for dir in os.listdir(user_story_feature):
     #     # print(dir)
@@ -280,10 +375,35 @@ if __name__ == '__main__':
     #                           encoding='utf8') as f:
     #                     json.dump(feature_json, f, indent=4, ensure_ascii=False)
 
-    nlp = spacy.load("en_core_web_sm")
-    test = './test.feature'
-    feature = parse_feature_file(test)
-    gm = feature_to_goal_model(feature)
-    dot = Digraph(comment='Goal Model')
-    draw_goal_model(gm, dot)
-    dot.render('./result/goal_model.png', view=True)
+    # test = './test.feature'
+    # nlp = spacy.load("en_core_web_sm")
+    # feature = parse_feature_file(test)
+    # gm = feature_to_goal_model(feature)
+    # dot = Digraph(comment='Goal Model')
+    # draw_goal_model(gm, dot)
+    # dot.render('./result/goal_model.png', view=True)
+
+    print(get_core("User signs up with invalid data"))
+
+    # feature_dir = './user_story_feature/broth-master'
+    # features_by_actor = {}
+    # goals_by_actor = {}
+    # for file in os.listdir(feature_dir):
+    #     if file.endswith('.feature'):
+    #         feature = parse_feature_file(os.path.join(feature_dir, file))
+    #         if feature is not None:
+    #             if feature.user_story.as_a not in features_by_actor.keys():
+    #                 features_by_actor[feature.user_story.as_a] = []
+    #             features_by_actor[feature.user_story.as_a].append(feature)
+    # for actor in features_by_actor.keys():
+    #     goal = Goal(value=actor, type='goal')
+    #     for feature in features_by_actor[actor]:
+    #         if actor not in goals_by_actor.keys():
+    #             goals_by_actor[actor] = []
+    #         goals_by_actor[actor].append(feature_to_goal_model(feature))
+    #     # goals_by_actor[actor] = merge_goals_by_so_that(goals_by_actor[actor])
+    #     for g in goals_by_actor[actor]:
+    #         goal.children.append(g)
+    #     dot = Digraph(comment='Goal Model')
+    #     draw_goal_model(goal, dot)
+    #     dot.render('./result/goal_model_' + actor + '.png', view=True)

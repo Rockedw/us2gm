@@ -1,5 +1,4 @@
 Feature: Account Update
-
   In order to display my most accurate user information
   As a user
   I should be able to edit my account

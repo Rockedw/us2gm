@@ -1,6 +1,6 @@
 Feature: Sign in
   In order to get access to protected sections of the site
-  AS a user
+  As a user
   I should be able to sign in
   
   

@@ -6,7 +6,7 @@ Feature: Sign up
   Background:
     Given an email template for "welcome" exists
 
-  Scenario: User signs up with invalid data
+  Scenario: User cannot sign up with invalid data
     When I go to the sign up page
     And I fill in "Email" with "bogusemail"
     And I fill in "Password" with "passw0rd"
@@ -14,7 +14,7 @@ Feature: Sign up
     And I press "Sign Up"
     Then I should see error messages
   
-  Scenario: User signs up with valid data
+  Scenario: User can sign up with valid data
     When I go to the sign up page
     And I fill in "Email" with "joe@gethandcrafted.com"
     And I fill in "Password" with "passw0rd"

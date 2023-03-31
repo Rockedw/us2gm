@@ -186,14 +186,14 @@ def scenario_to_goal_model(scenario) -> Goal:
     givens_list = scenario.givens_list
     if givens_list is not None and len(givens_list) > 0:
         for givens in givens_list:
-            if len(givens) > 1:
+            if len(givens) > 0:
                 temp_context = Context(value='temp', type='statement')
                 for given in givens:
                     context = Context(value=given, type='fact')
                     temp_context.add_child(context)
                 temp_goal.context = temp_context
-            else:
-                temp_goal.context = Context(value=givens[0], type='fact')
+            # else:
+            #     temp_goal.context = Context(value=givens[0], type='fact')
     scenario_children = scenario.children
     if scenario_children is not None and len(scenario_children) > 0:
         for scenario_child in scenario_children:
@@ -208,14 +208,14 @@ def feature_to_goal_model(feature: Feature):
     scenarios = user_story.scenarios
     background = user_story.background
     if background is not None:
-        if len(background.givens) > 1:
+        if len(background.givens) > 0:
             temp_context = Context(value='temp', type='statement')
             for given in background.givens:
                 context = Context(value=given, type='fact')
                 temp_context.add_child(context)
             root_goal.context = temp_context
-        else:
-            root_goal.context = Context(value=background.givens[0], type='fact')
+        # else:
+        #     root_goal.context = Context(value=background.givens[0], type='fact')
     if scenarios is not None and len(scenarios) > 0:
         top_goals = []
         for scenario in scenarios:
@@ -240,17 +240,15 @@ def merge_scenarios(feature: Feature):
     if len(scenarios) > 1:
         core_scenarios = {}
         for scenario in scenarios:
-            # subj, verb, obj = get_core(scenario.value)
-            # core = f"{subj} {verb} {obj}"
-            core = get_core(scenario.value)
+            core, new_sentence = get_core(scenario.value)
             flag = False
             for c in core_scenarios.keys():
-                if is_similar(c, core):
+                if is_similar(c, new_sentence):
                     core_scenarios[c].append(scenario)
                     flag = True
                     break
             if not flag:
-                core_scenarios[core] = [scenario]
+                core_scenarios[new_sentence] = [scenario]
         new_scenarios = []
         for c in core_scenarios.keys():
             if len(core_scenarios[c]) <= 1:
@@ -264,97 +262,296 @@ def merge_scenarios(feature: Feature):
     return feature
 
 
-def merge_goals_by_so_that(goals: list[Goal]):
-    if len(goals) > 1:
+def merge_goals_by_so_that(root: Goal):
+    goals = root.children
+    if len(goals) > 2:
         new_goals = []
         goals_by_so_that = {}
         for g in goals:
             if g.so_that is not None and g.so_that != '':
                 flag = False
+                g_so_that_core = get_core(g.so_that)[1]
                 for so_that in goals_by_so_that.keys():
-                    if is_similar(so_that, g.so_that, 0.8):
+                    if is_similar(so_that, g_so_that_core, 0.8):
                         print(f"合并{so_that}和{g.so_that}")
                         goals_by_so_that[so_that].append(g)
                         flag = True
                         break
                 if not flag:
-                    goals_by_so_that[g.so_that] = [g]
+                    goals_by_so_that[g_so_that_core] = [g]
             else:
                 new_goals.append(g)
         for so_that in goals_by_so_that.keys():
             if len(goals_by_so_that[so_that]) <= 1:
                 new_goals.extend(goals_by_so_that[so_that])
             else:
-                new_goal = Goal(value=goals_by_so_that[so_that][0].value, type='goal', so_that=so_that)
+                new_goal = Goal(value=so_that, type='goal', so_that=so_that)
                 for goal in goals_by_so_that[so_that]:
-                    new_goal.children.append(goal)
+                    new_goal.add_child(goal)
                 new_goals.append(new_goal)
-        return new_goals
+        root.children = new_goals
+
+
+def merge_goals_by_verb_and_obj(root: Goal):
+    if root.children is not None and len(root.children) >= 2:
+        for child in root.children:
+            merge_goals_by_verb_and_obj(child)
+        new_children = []
+        verb_obj = {}
+        for child in root.children:
+            core, new_sentence = get_core(child.value)
+            flag = False
+            for c in verb_obj.keys():
+                if is_similar(c, new_sentence):
+                    verb_obj[c].append(child)
+                    flag = True
+                    break
+            if not flag:
+                verb_obj[new_sentence] = [child]
+        for c in verb_obj.keys():
+            if len(verb_obj[c]) <= 1:
+                new_children.extend(verb_obj[c])
+            else:
+                new_goal = Goal(value=verb_obj[c][0].value, type='goal')
+                for goal in verb_obj[c]:
+                    new_goal.add_child(goal)
+                new_children.append(new_goal)
+        root.children = new_children
+    return root
+
+
+def merge_goals_by_verb(root: Goal):
+    if root.children is not None and len(root.children) >= 2:
+        for child in root.children:
+            merge_goals_by_verb(child)
+        new_children = []
+        verb_dict = {}
+        for child in root.children:
+            core, _ = get_core(child.value)
+            verb = ''
+            subj = ''
+            for token in core[0]:
+                subj += token.text + ' '
+            subj = subj.strip()
+            for token in core[1]:
+                verb += token.text + ' '
+            verb = verb.strip()
+            flag = False
+            for c in verb_dict.keys():
+                if is_similar(c, verb):
+                    verb_dict[c].append([child, subj])
+                    flag = True
+                    break
+            if not flag:
+                verb_dict[verb] = [[child, subj]]
+        for c in verb_dict.keys():
+            if len(verb_dict[c]) <= 1:
+                for goal in verb_dict[c]:
+                    new_children.append(goal[0])
+            else:
+                new_goal = Goal(value=f"{verb_dict[c][0][1]} {c} something", type='goal')
+                for goal in verb_dict[c]:
+                    new_goal.add_child(goal[0])
+                new_children.append(new_goal)
+        root.children = new_children
+        for child in root.children:
+            child.father = root
+    return root
+
+
+def get_core(sentence):
+    doc = nlp(sentence)
+    passive = False
+    for token in doc:
+        print(token.text, token.dep_, token.head.text)
+        if 'pass' in token.dep_:
+            passive = True
+    if not passive:
+        sub_toks = [tok for tok in doc if (tok.dep_ == "nsubj")]
+        verb_toks = [tok for tok in doc if (tok.pos_ == "VERB")]
+        dobj_toks = [tok for tok in doc if (tok.dep_ == "dobj")]
+        iobj_toks = [tok for tok in doc if (tok.dep_ == "dative")]
+        if sub_toks:
+            subject = [tok for tok in sub_toks[0].subtree]
+        else:
+            subject = []
+        if verb_toks:
+            verb_object = [tok for tok in verb_toks[0].subtree if tok.pos_ == "VERB"]
+        else:
+            verb_object = []
+        # verb = verb_toks[0].text
+        if dobj_toks:
+            direct_object = [tok for tok in dobj_toks[0].subtree]
+        else:
+            direct_object = []
+        if iobj_toks:
+            indirect_object = [tok for tok in iobj_toks[0].subtree]
+        else:
+            indirect_object = []
+
+        # print("Subject:", subject)
+        # print("Verb:", verb_object)
+        # print("Direct Object:", direct_object)
+        # print("Indirect Object:", indirect_object)
+        if len(verb_object) >= 2:
+            temp = []
+            auxs = [tok for tok in doc if tok.dep_ == "aux"]
+            for v in verb_object:
+                for aux in auxs:
+                    if v == aux.head:
+                        temp.append(aux)
+                temp.append(v)
+            verb_object = temp
+        core = [subject, verb_object, direct_object, indirect_object]
     else:
-        return goals
+        verb_toks = [tok for tok in doc if (tok.pos_ == "VERB")]
+        if verb_toks:
+            verb_object = [tok for tok in verb_toks[0].subtree if tok.pos_ == "VERB"]
+        else:
+            verb_object = []
+        if len(verb_object) >= 2:
+            temp = []
+            auxs = [tok for tok in doc if tok.dep_ == "aux"]
+            for v in verb_object:
+                for aux in auxs:
+                    if v == aux.head:
+                        temp.append(aux)
+                temp.append(v)
+            verb_object = temp
+        dobj_toks = [tok for tok in doc if (tok.dep_ == "nsubjpass")]
+        # 第一个字母小写
+        if dobj_toks:
+            direct_object = [tok for tok in dobj_toks[0].subtree]
+        else:
+            direct_object = []
+        # 输出动词原形
+        verb = [tok for tok in doc if (tok.pos_ == "VERB")][0].lemma_
+        sub_toks = [tok for tok in doc if (tok.dep_ == "pobj")]
+        # 第一个字母大写
+        if sub_toks:
+            subject = [tok for tok in sub_toks[0].subtree]
+        else:
+            subject = []
+        # print("Subject:", subject)
+        # print("Verb:", verb)
+        # print("Direct Object:", direct_object)
+        core = [subject, verb_object, direct_object, None]
+    new_sentence = ''
+    for c in core:
+        if c is not None:
+            for t in c:
+                new_sentence = new_sentence + t.lemma_ + ' '
+    new_sentence = new_sentence.strip()
+    return core, new_sentence
 
 
-def get_core(sentence: str):
-    doc = nlp("User signs up with invalid data")
+# 对根节点进行剪枝，如果root的子节点只有一个，那么就把root的子节点变成root的父节点的子节点
+def prune(root: Goal):
+    if root is not None and root.father is not None and len(root.children) == 1:
+        root.children = root.children[0].children
+        for child in root.children:
+            child.father = root
+    else:
+        for child in root.children:
+            prune(child)
 
+
+def remove_modifiers(sentence: str):
+    doc = nlp(sentence)
+    new_sentence = []
     for token in doc:
-        print(token.dep_)
+        print(token.text, token.dep_, token.head.text, token.head.pos_)
+        if token.dep_ not in ["amod", "advmod", "npadvmod"]:
+            new_sentence.append(token.text)
+    return " ".join(new_sentence)
 
-    core_parts = []
+
+def analyze_sentence(sentence):
+    doc = nlp(sentence)
+    passive = False
     for token in doc:
-        if token.dep_ in ("nsubj", "ROOT", "dobj"):
-            core_parts.append(token.text)
+        print(token.text, token.dep_, token.head.text)
+        if 'pass' in token.dep_:
+            passive = True
+    if not passive:
+        sub_toks = [tok for tok in doc if (tok.dep_ == "nsubj")]
+        verb_phrase = []
+        for token in doc:
+            if token.pos_ == "VERB":
+                verb_phrase.append(token.text)
+            elif token.dep_ == "prt" and token.head.pos_ == "VERB":
+                verb_phrase.append(token.text)
+        dobj_toks = [tok for tok in doc if (tok.dep_ == "dobj")]
+        iobj_toks = [tok for tok in doc if (tok.dep_ == "dative")]
+        if sub_toks:
+            subject = [tok for tok in sub_toks[0].subtree]
+        else:
+            subject = []
 
-    print(core_parts)
+        if dobj_toks:
+            direct_object = [tok for tok in dobj_toks[0].subtree]
+        else:
+            direct_object = []
+        if iobj_toks:
+            indirect_object = [tok for tok in iobj_toks[0].subtree]
+        else:
+            indirect_object = []
+
+        print("Subject:", subject)
+        print("Verb:", verb_phrase)
+        print("Direct Object:", direct_object)
+        print("Indirect Object:", indirect_object)
+        new_sentence = [subject, verb_phrase, direct_object, indirect_object]
+    else:
+        dobj_toks = [tok for tok in doc if (tok.dep_ == "nsubjpass")]
+        # 第一个字母小写
+        if dobj_toks:
+            direct_object = [tok for tok in dobj_toks[0].subtree]
+        else:
+            direct_object = []
+        # 输出动词原形
+        # verb = [tok for tok in doc if (tok.pos_ == "VERB")][0].lemma_
+        verb_phrase = []
+        for token in doc:
+            if token.pos_ == "VERB":
+                verb_phrase.append(token.lemma_)
+            elif token.dep_ == "prt" and token.head.pos_ == "VERB":
+                verb_phrase.append(token.text)
+        sub_toks = [tok for tok in doc if (tok.dep_ == "pobj")]
+        # 第一个字母大写
+        if sub_toks:
+            subject = [tok for tok in sub_toks[0].subtree]
+        else:
+            subject = []
+        print("Subject:", subject)
+        print("Verb:", verb_phrase)
+        print("Direct Object:", direct_object)
+        new_sentence = [subject, verb_phrase, direct_object, []]
+    return new_sentence
 
 
-# def get_core(sentence: str):
-#     doc = nlp(sentence)
-#     subject = ""
-#     verb = ""
-#     obj = ""
-#     has_obj = False
-#     has_subj = False
-#     passive = False
-#     for token in doc:
-#         if "subj" in token.dep_:
-#             if "pass" in token.dep_:
-#                 passive = True
-#             if passive:
-#                 if not has_obj:
-#                     obj = token.text
-#                     has_obj = True
-#             else:
-#                 if not has_subj:
-#                     subject = token.text
-#                     has_subj = True
-#         elif "obj" in token.dep_:
-#             if "pass" in token.dep_:
-#                 passive = True
-#             if passive:
-#                 if not has_subj:
-#                     subject = token.text
-#                     has_subj = True
-#             else:
-#                 if not has_obj:
-#                     obj = token.text
-#                     has_obj = True
-#         elif "VERB" == token.pos_:
-#             verb = token.lemma_
-#     for token in doc:
-#         print(token.text, token.dep_, token.head.text, token.head.pos_)
-#     # print(f"{subject} {verb} {obj}")
-#     return subject, verb, obj
+def dfs(root: Goal):
+    if root is not None:
+        if root.value == 'scenario_value':
+            root.value = summarize_goals(root.children, tokenizer2, model2)
+        for child in root.children:
+            dfs(child)
 
-# def get_core(sentence:str):
-#     doc = nlp(sentence)
-#     new_sentence = []
-#     for token in doc:
-#         print(token.text, token.dep_, token.head.text, token.head.pos_)
-#         if token.dep_ not in ["amod", "advmod", "npadvmod"]:
-#             new_sentence.append(token.text)
-#     return " ".join(new_sentence)
 
+def bfs(root: Goal):
+    queue = [root]
+    cnt = 1
+    while queue:
+        node = queue.pop(0)
+        if node.context is not None and node.context.value == 'temp':
+            node.context.value = 'Context' + str(cnt)
+            cnt += 1
+        for child in node.children:
+            queue.append(child)
+
+
+# tokenizer2 = AutoTokenizer.from_pretrained("THUDM/chatglm-6b-int4", trust_remote_code=True)
+# model2 = AutoModel.from_pretrained("THUDM/chatglm-6b-int4", trust_remote_code=True).half().cuda()
 
 if __name__ == '__main__':
     nlp = spacy.load("en_core_web_sm")
@@ -383,27 +580,34 @@ if __name__ == '__main__':
     # draw_goal_model(gm, dot)
     # dot.render('./result/goal_model.png', view=True)
 
-    print(get_core("User signs up with invalid data"))
+    # print(get_core("User signs up with invalid data"))
 
-    # feature_dir = './user_story_feature/broth-master'
-    # features_by_actor = {}
-    # goals_by_actor = {}
-    # for file in os.listdir(feature_dir):
-    #     if file.endswith('.feature'):
-    #         feature = parse_feature_file(os.path.join(feature_dir, file))
-    #         if feature is not None:
-    #             if feature.user_story.as_a not in features_by_actor.keys():
-    #                 features_by_actor[feature.user_story.as_a] = []
-    #             features_by_actor[feature.user_story.as_a].append(feature)
-    # for actor in features_by_actor.keys():
-    #     goal = Goal(value=actor, type='goal')
-    #     for feature in features_by_actor[actor]:
-    #         if actor not in goals_by_actor.keys():
-    #             goals_by_actor[actor] = []
-    #         goals_by_actor[actor].append(feature_to_goal_model(feature))
-    #     # goals_by_actor[actor] = merge_goals_by_so_that(goals_by_actor[actor])
-    #     for g in goals_by_actor[actor]:
-    #         goal.children.append(g)
-    #     dot = Digraph(comment='Goal Model')
-    #     draw_goal_model(goal, dot)
-    #     dot.render('./result/goal_model_' + actor + '.png', view=True)
+    feature_dir = './user_story_feature/test'
+    features_by_actor = {}
+    goals_by_actor = {}
+    for file in os.listdir(feature_dir):
+        if file.endswith('.feature'):
+            feature = parse_feature_file(os.path.join(feature_dir, file))
+            if feature is not None:
+                if feature.user_story.as_a not in features_by_actor.keys():
+                    features_by_actor[feature.user_story.as_a] = []
+                features_by_actor[feature.user_story.as_a].append(feature)
+
+    for actor in features_by_actor.keys():
+        goal = Goal(value=actor, type='goal')
+        for feature in features_by_actor[actor]:
+            if actor not in goals_by_actor.keys():
+                goals_by_actor[actor] = []
+            goals_by_actor[actor].append(feature_to_goal_model(feature))
+        # goals_by_actor[actor] = merge_goals_by_so_that(goals_by_actor[actor])
+        for g in goals_by_actor[actor]:
+            goal.add_child(g)
+        # goal = merge_goals_by_verb_and_obj(goal)
+        # dfs(goal)
+        bfs(goal)
+        merge_goals_by_so_that(root=goal)
+        goal = merge_goals_by_verb(goal)
+        prune(goal)
+        dot = Digraph(comment='Goal Model')
+        draw_goal_model(goal, dot)
+        dot.render('./result/goal_model_' + actor + '.png', view=True)

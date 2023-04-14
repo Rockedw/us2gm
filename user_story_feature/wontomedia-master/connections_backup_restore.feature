@@ -1,6 +1,6 @@
 Feature:  Download (for backup) and upload (for restore) all connections in N3
   In order to safeguard the content of a wontology,
-  As an administrator, I want
+  As a administrator,
   I should  download and upload the system's connections.
 
   @not_for_selenium

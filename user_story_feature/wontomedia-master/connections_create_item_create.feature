@@ -1,7 +1,7 @@
 Feature:  Create new items in the process of creating a connection
   In order to create a wontology,
-  as a contributor, I want
-  to be able create a new item during the creation of a new connection, so
+  As a contributor,
+  I want to be able create a new item during the creation of a new connection, so
     that I don't have to alternate between the two types of creation screens
     or abandon creation of a connection if I hadn't already put the items in place
 

@@ -1,7 +1,7 @@
 Feature:  Edit individual connections through non-Ajax pages
   In order to create a wontology,
-  as a contributor, I want
-  to be able to change the information for existing connections.
+  As a contributor,
+  I want to be able to change the information for existing connections.
 
   Scenario: Change all fields of an existing connection
     Given there are 4 existing individuals like "indiv"

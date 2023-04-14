@@ -1,7 +1,7 @@
 Feature:  Create and edit individual items with implicit creation of
           is_instance_of connections between the item and a class item
   In order to create an expressive wontology,
-  As a contributor
+  As a contributor,
   I should have special support for the manipulation of an item's class
 
   Scenario: Create a new item with class

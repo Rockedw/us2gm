@@ -1,6 +1,6 @@
 Feature:  Create and view new individual items through non-Ajax pages
   In order to create a wontology,
-  as a contributor, I want
+  As a contributor,
   I want to create and view items.
 
   Scenario: Create new item

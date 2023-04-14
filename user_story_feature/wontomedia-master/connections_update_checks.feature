@@ -1,6 +1,6 @@
 Feature:  Verify inputs for editing of connections dynamically within the page
   In order to create a wontology,
-  as a contributor, I want
+  As a contributor,
   I want to tell about bad inputs before I submit a page.
 
 # The data fields availiable in connections/##/edit pages are the same as

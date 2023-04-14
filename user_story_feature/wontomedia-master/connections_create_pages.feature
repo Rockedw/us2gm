@@ -1,6 +1,6 @@
 Feature:  Create and view new individual connections through non-Ajax pages
   In order to create a wontology,
-  As a contributor, I want
+  As a contributor,
   I want to create and view connections.
 
   Scenario: Create new category-hierarchy-category connection

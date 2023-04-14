@@ -1,7 +1,7 @@
 from transformers import AutoTokenizer, AutoModel
 import torch
 import torch.nn.functional as F
-from main2 import *
+from main import *
 import spacy
 
 

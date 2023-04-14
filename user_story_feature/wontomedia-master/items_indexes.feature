@@ -1,6 +1,6 @@
 Feature:  Show existing ontology information in app home and index pages
   In order to work with a wontology,
-  as a contributor, I want
+  As a contributor,
   I want to  view lists of the wontologies current contents
 
 

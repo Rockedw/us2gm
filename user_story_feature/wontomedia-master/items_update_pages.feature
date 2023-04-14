@@ -1,6 +1,6 @@
 Feature:  Edit individual items through non-Ajax pages
   In order to create a wontology,
-  as a contributor, I want
+  As a contributor,
   I want to  change the information for existing items.
 
   Scenario: Change all fields of an existing item

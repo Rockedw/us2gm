@@ -1,6 +1,6 @@
 Feature:  Download (for backup) and upload (for restore) all items in YAML
   In order to safeguard the content of a wontology,
-  as an administrator, I want
+  as an administrator,
   I want to download and upload the system's items.
 
   @not_for_selenium

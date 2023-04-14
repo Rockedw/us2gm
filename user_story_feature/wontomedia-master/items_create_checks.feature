@@ -1,7 +1,7 @@
 Feature:  Verify inputs for creation of new item dynamically within the page
   (set focus on Type onload; highlight descriptive text matching Type selection)
   In order to create a wontology,
-  as a contributor, I want
+  As a contributor,
   to be told about bad inputs before I submit a page.
 
 # a brief description of UI functionality to guide test case choice/design:

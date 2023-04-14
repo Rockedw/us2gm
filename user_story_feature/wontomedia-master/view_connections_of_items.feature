@@ -1,6 +1,6 @@
 Feature:  View connections related to a item on that item's "resource" page
   To understand the arrangement of an ontology,
-  as a contributor, I want
+  As a contributor,
   I want to  view a item and its connections at the same time.
 
 # a brief description of UI functionality, to guide test case choice:

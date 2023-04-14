@@ -20,11 +20,9 @@ def mean_pooling(model_output, attention_mask):
     return torch.sum(token_embeddings * input_mask_expanded, 1) / torch.clamp(input_mask_expanded.sum(1), min=1e-9)
 
 
-def cal_sim(sentence1, sentence2):
+def cal_sim(sentence1, sentence2,tokenizer,model):
     sentences = [sentence1, sentence2]
     # Load model from HuggingFace Hub
-    tokenizer = AutoTokenizer.from_pretrained('sentence-transformers/all-MiniLM-L6-v2')
-    model = AutoModel.from_pretrained('sentence-transformers/all-MiniLM-L6-v2')
     # Tokenize sentences
     encoded_input = tokenizer(sentences, padding=True, truncation=True, return_tensors='pt')
     # Compute token embeddings
@@ -60,6 +58,24 @@ def test():
     print(response)
 
 
+from transformers import BertTokenizer, BertModel
+from scipy.spatial.distance import cosine
+
+tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
+model = BertModel.from_pretrained('bert-base-uncased')
+
+
+def get_word_vector(word):
+    input_ids = tokenizer.encode(word, return_tensors='pt')
+    with torch.no_grad():
+        outputs = model(input_ids)
+    last_hidden_state = outputs[0]
+    word_vec = last_hidden_state[0, 1, :].numpy()
+    return word_vec
+
+
+
+
 if __name__ == '__main__':
     # for file in os.listdir('dataset'):
     #     # 如果 os.path.join('user_story_feature', file) 不存在，创建
@@ -68,4 +84,26 @@ if __name__ == '__main__':
     #
     #     scan_feature(os.path.join('./dataset', file), os.path.join('user_story_feature', file))
     # print(cal_sim('I sort students', 'I sort teachers'))
-    test()
+    print(similarity('healthy', 'unhealthy'))
+    print(cal_sim('healthy', 'unhealthy'))
+
+    print(similarity('sick', 'unhealthy'))
+    print(cal_sim('sick', 'unhealthy'))
+
+    print(similarity('healthy', 'healthy'))
+    print(cal_sim('healthy', 'healthy'))
+
+    print(similarity('healthy', 'not healthy'))
+    print(cal_sim('healthy', 'not healthy'))
+
+    print(similarity('healthy', 'happy'))
+    print(cal_sim('healthy', 'happy'))
+
+    print(similarity('healthy', 'sad'))
+    print(cal_sim('healthy', 'sad'))
+
+    print(similarity('happy', 'unhappy'))
+    print(cal_sim('happy', 'unhappy'))
+
+    print(similarity('happy', 'sad'))
+    print(cal_sim('happy', 'sad'))

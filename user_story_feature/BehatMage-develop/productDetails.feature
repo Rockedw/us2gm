@@ -1,5 +1,5 @@
 Feature: ProductDetails
-  As a Customer using a commerce website
+  As a Customer
   I want to be able to see Product details
   So that I can find the Product I am looking for
 

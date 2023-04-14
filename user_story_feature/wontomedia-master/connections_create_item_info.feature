@@ -1,7 +1,7 @@
 Feature:  Verify inputs for creation of new connection dynamically within the page
   (query server for Description of items chose in page's Select controls)
   In order to create a wontology,
-  As a contributor, I want
+  As a contributor,
   I want to give context relating to my selections, so
     I feel more confidence in my actions and make fewer mistakes
 
